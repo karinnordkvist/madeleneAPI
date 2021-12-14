@@ -1,12 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import listEndpoints from 'express-list-endpoints';
 import netflixData from './data/netflix-titles.json';
-import res from 'express/lib/response';
 
-// If you're using one of our datasets, uncomment the appropriate import below
-// to get started!
-//
 // import goldenGlobesData from './data/golden-globes.json'
 // import avocadoSalesData from './data/avocado-sales.json'
 // import booksData from './data/books.json'
@@ -52,8 +49,9 @@ if (process.env.RESET_DB) {
 		await Show.deleteMany({});
 
 		//Creates a new show
-		netflixData.forEach((netflixData) => {
-			new Show(netflixData).save();
+		netflixData.forEach((item) => {
+			const newShow = newShow(item);
+			newShow.save();
 		});
 	};
 
@@ -65,6 +63,11 @@ if (process.env.RESET_DB) {
 // Start defining your routes here
 app.get('/', (req, res) => {
 	res.send('Hello world, welcome to netflix titles API by Madelene Trang');
+});
+
+//showing all the possible enpoints in the app
+app.get('/endpoints', (req, res) => {
+	res.send(listEndpoints(app));
 });
 
 //endpoint to get all shows

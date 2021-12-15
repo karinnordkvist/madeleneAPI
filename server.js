@@ -19,10 +19,6 @@ mongoose.Promise = Promise;
 const port = process.env.PORT || 8080;
 const app = express();
 
-// Add middlewares to enable cors and json body parsing
-app.use(cors());
-app.use(express.json());
-
 //A show database model to start populating the database
 //shows all the existing data
 const Show = mongoose.model('Show', {
@@ -58,6 +54,19 @@ if (process.env.RESET_DB) {
 	seedDataBase();
 }
 
+// Add middlewares to enable cors and json body parsing
+app.use(cors());
+app.use(express.json());
+
+// Our own middlewarethat checks if the database is connected before going to our endpoints
+app.use((req, res, next) => {
+	if (mongoose.connection.readyState === 1) {
+		next();
+	} else {
+		res.status(503).json({ error: 'Service unavailable' });
+	}
+});
+
 //RESTful route
 
 // Start defining your routes here
@@ -70,38 +79,76 @@ app.get('/endpoints', (req, res) => {
 	res.send(listEndpoints(app));
 });
 
+//----COLLECTION 0F RESULT------
 //endpoint to get all shows
+//Query params
 app.get('/shows', async (req, res) => {
-	const allShows = await Show.find();
-	res.json(allShows);
+	console.log(req.query);
+
+	const { type, country, release_year, director } = req.query;
+	let showsToSend = await Show.find(req.query);
+
+	if (req.query.type) {
+		const showByType = await Show.find({ type });
+		showsToSend = showByType;
+	}
+
+	if (req.query.director) {
+		const showByDirector = await Show.find({ director });
+		showsToSend = showByDirector;
+	}
+
+	if (req.query.country) {
+		const showByCountry = await Show.find({ country });
+		showsToSend = showByCountry;
+	}
+
+	if (req.query.release_year) {
+		const showByReleaseYear = await Show.find({ release_year });
+		showsToSend = showByReleaseYear;
+	}
+
+	if (showsToSend) {
+		res.json(showsToSend);
+	} else {
+		res.status(404).json(`Sorry, cannot be found `);
+	}
 });
 
 //----SINGLE RESULT------
 //get a single show based on the title
-app.get('shows/:title', async (req, res) => {
+app.get('/shows/title/:title', async (req, res) => {
 	try {
 		const singleShowTitle = await Show.findOne({ title: req.params.title });
+
 		if (singleShowTitle) {
-			res.json(singleShowTitle);
+			res.status(200).json(singleShowTitle);
 		} else {
-			res.status(404).json(`Sorry, no show can be found with that title `);
+			res
+				.status(404)
+				.json({ error: `Sorry, no show can be found with that title ` });
 		}
+
+		//invalid title
 	} catch (err) {
 		res.status(400).json({ error: 'Invalid title, please try again' });
 	}
 });
 
 //get a single show based on the show's unique id
-app.get('shows/:id', async (req, res) => {
+app.get('/shows/id/:id', async (req, res) => {
 	try {
-		const singleShowID = await Show.find({ show_id: req.params.show_id });
+		const { id } = req.params;
+		const singleShowID = await Show.findById(id);
 		if (singleShowID) {
-			res.status(200).json(singleShowID);
+			res.json(singleShowID);
 		} else {
-			res.status(404).json(`Sorry, the id can not be found`);
+			res.status(404).json({ error: `Sorry, the id can not be found` });
 		}
+
+		//invalid id
 	} catch (err) {
-		res.status(400).json({ error: 'Invalid id, please try again' });
+		res.status(400).json({ error: 'id is invalid, please try again!' });
 	}
 });
 

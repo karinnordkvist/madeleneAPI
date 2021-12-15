@@ -1,39 +1,33 @@
-# Mongo API Project
+# Mongo API Project 
 
-The aim of the project was to learn how to use Mongodb to store data, model data, return error messages and fetch items from a Mongo database using Mongoose. The API is built with Node on Express and the aim of the enpoints is to follow RESTful standards.
+The aim of the project was to learn how to use Mongodb to store data, model data, return error messages and fetch items from a Mongo database using Mongoose. The API is built with Node on Express and the aim of the enpoints is to follow RESTful standards. A dataset of Netflix titles was used for this project 🎥.
 
 ## Documentation
 
-GET /
+<b>GET /</b>  <br>
 Welcome page
 
-GET /shows
+<b>GET /shows</b>  <br>
 Displays all 1375 netflix titles in the dataset.
 
-----Query Params----
+<b>----Query Params----</b>
 
-GET /shows?type=
-
+<b>GET /shows?type=</b>  <br>
 Filters the dataset by type
 
-GET /shows?country=
-
+<b>GET /shows?country=</b>  <br>
 Filters the dataset by country
 
-GET /shows?release_year=
-
+<b>GET /shows?release_year=</b>  <br>
 Filters the dataset by release year
 
-GET /shows?director=
-
+<b>GET /shows?director=</b>  <br>
 Filters the dataset by director
 
-GET /shows/title/:title
-
+<b>GET /shows/title/:title</b>  <br>
 Displays a netflix title based on the title parameter from the request URL.
 
-GET /shows/id/:id
-
+<b>GET /shows/id/:id </b> <br>
 Displays a netflix title based on the unique id parameter. An error message will show if no titles are found by that id
 
 ## View it live

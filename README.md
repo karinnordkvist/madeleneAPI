@@ -13,21 +13,27 @@ Displays all 1375 netflix titles in the dataset.
 ----Query Params----
 
 GET /shows?type=
+
 Filters the dataset by type
 
 GET /shows?country=
+
 Filters the dataset by country
 
 GET /shows?release_year=
+
 Filters the dataset by release year
 
 GET /shows?director=
+
 Filters the dataset by director
 
 GET /shows/title/:title
+
 Displays a netflix title based on the title parameter from the request URL.
 
 GET /shows/id/:id
+
 Displays a netflix title based on the unique id parameter. An error message will show if no titles are found by that id
 
 ## View it live

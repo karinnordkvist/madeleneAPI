@@ -24,6 +24,8 @@ Filters the dataset by release year
 <b>GET /shows?director=</b>  <br>
 Filters the dataset by director
 
+<b>----Path Params----</b>
+
 <b>GET /shows/title/:title</b>  <br>
 Displays a netflix title based on the title parameter from the request URL.
 

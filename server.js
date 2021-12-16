@@ -41,11 +41,11 @@ if (process.env.RESET_DB) {
 	console.log('Resetting database!');
 	const seedDataBase = async () => {
 		//Deletes pre-existing shows to prevent duplicates
-		// await Show.deleteMany({});
+		await Show.deleteMany({});
 
 		//Creates a new show
 		netflixData.forEach((item) => {
-			const newShow = newShow(item);
+			const newShow = new Show(item);
 			newShow.save();
 		});
 	};

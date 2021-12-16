@@ -10,17 +10,16 @@ import netflixData from './data/netflix-titles.json';
 
 // import topMusicData from './data/top-music.json'
 
-const mongoUrl =
-	process.env.MONGO_URL || 'mongodb://localhost/project-mongo-netflix';
+const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/project-mongo-netflix';
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = Promise;
 
 // Defines the port the app will run on
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8090;
 const app = express();
 
 //A show database model to start populating the database
-//shows all the existing data
+//shows all the existing data 
 const Show = mongoose.model('Show', {
 	show_id: Number,
 	title: String,
